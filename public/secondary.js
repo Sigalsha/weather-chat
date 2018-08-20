@@ -1,6 +1,16 @@
 export class Comment {
     constructor(text){
-        Comment.id++;
+        this.id = this.getIdComment();
         this.text = text;
     }
+
+    S4 () {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+    }
+
+    getIdComment () {
+        var guidID = (this.S4() + this.S4() + "-" + this.S4() + "-4" + this.S4().substr(0,3) + "-" + this.S4() + "-" + this.S4() + this.S4() + this.S4()).toLowerCase();
+        return guidID;
+    }
 }
+

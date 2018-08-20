@@ -2,7 +2,7 @@ var source = $('#weather-template').html();
 var template = Handlebars.compile(source);
 
 import { WeatherBox} from './main.js';
-// import { Comment} from './secondary.js';
+import { Comment} from './secondary.js';
 
 const weathers = [];
 
@@ -13,7 +13,8 @@ var fetch = function () {
         url: urlBack,
         success: function (data) {
             let newData = data;
-            newWeather(newData);		
+            newWeather(newData);
+            renderWeather();		
         },
         error: function () {
             console.log("error");
@@ -25,7 +26,6 @@ var fetch = function () {
 
   var createUrl = function() {
     var cityName = $('#search').val();
-    console.log(cityName);
     var baseUrl = 'http://api.apixu.com/v1/current.json?key=9e30a8992e0d45fb864153729181908&q=';
     var newUrl = baseUrl + cityName;
     return newUrl;
@@ -44,14 +44,10 @@ var renderWeather = function () {
     $('.weather-container').append(newHTML);
 };
 
-var createComment = function (commentTxt) {
-    var newComment = new Comment(commentTxt);
-    return newComment;
-};
-
-var addCommentToWeather = function(weatherID, commentOBj) {
+var createComment = function (commentTxt, weatherID) {
+    var comment = new Comment(commentTxt);
     let currentWeather = _findWeatherById(weatherID);
-    currentWeather.getComment(commentOBj);
+    currentWeather.getComment(comment);
 };
     
 var _findWeatherById = function (id) {
@@ -62,19 +58,29 @@ var _findWeatherById = function (id) {
     }
 };    
 
+var removeCityWeather = function(weatherID) {
+    let weather =  _findWeatherById(weatherID);
+    weathers.splice(weathers.indexOf(weather), 1);
+};
+
+//--------------EVENTS-------------------------//
 
 $('.get-temp').on('click', function (ev) {
     ev.preventDefault();
-    fetch();
-    renderWeather();
-    
+    fetch();    
 });
 
-$('.weather-container').on('click', '.add-comment', function (ev) {
-    ev.preventDefault();
-    var $commentText = $(this).prev('#comment-input').val();
-    var $clickedWeather = $commentText.closest('.single-weather');
-    var weatherId = $clickedWeather.find('h5').data("id");
-    addCommentToWeather(weatherId, createComment($commentText));
+$('.weather-container').on('click', '.add-comment', function () {
+    var $weatherItem = $(this).parents('.weather-item');
+    var commentText = $weatherItem.find('#comment-input').val();
+    var weatherId = $weatherItem.data("id");
+    createComment(commentText, weatherId);
     renderWeather();
 });
+
+$('.weather-container').on('click', '.remove', function () {
+    var $weatherItem = $(this).parents('.weather-item');
+    var weatherId = $weatherItem.data("id");
+    removeCityWeather(weatherId);
+    renderWeather();
+  });

@@ -1,3 +1,11 @@
 h1 {
-    line-height: 150%;
+    line-height: 200%;
+}
+
+.weather-container {
+    margin-top: 3%;
+}
+
+.remove {
+    color: rgb(233, 36, 36);
 }
