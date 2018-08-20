@@ -31,34 +31,37 @@
     </div>
 
     <script id="weather-template" type="text/x-handlebars-template">
-        <div class="trash-icon">
-                <img src="00000"/>
-        </div>
-        <div class="title">
-            <h5>{{cityName}}</h5>
-        </div>
-
-        <div class="tempAndDate">
-            <p class="p-temp-date"> {{tempC}}°C / {{tempF}}°F at {{date}}</p>
-        </div>
-
-        <div class="comments">
-            {{#each comments}}
-                <p>{{text}}</p>
-            {{/each}}    
-        </div>
-        <form>
-            <div class="form-group">
-                <input type="text" id="comment-input" class="form-control" placeholder="Comment about the weather in" {{location.name}}/>
-                <button type="submit" class="btn btn-primary add-comment">Comment</button>
+        {{#each weathers}}  
+            <div class="trash-icon">
+                    <img src="00000"/>
             </div>
-        </form>
-        <br></br>
+            <div class="title">
+                <h5 data-id:"{{id}}">{{cityName}}</h5>
+            </div>
+
+            <div class="tempAndDate">
+                <p class="p-temp-date"> {{tempC}}°C / {{tempF}}°F at {{date}}</p>
+            </div>
+
+            <div class="comments">
+                {{#each comments}}
+                    <p data-id:="{{id}}">{{text}}</p>
+                {{/each}}    
+            </div>
+            <form>
+                <div class="form-group">
+                    <input type="text" id="comment-input" class="form-control" placeholder="Comment about the weather in" {{location.name}}/>
+                    <button type="submit" class="btn btn-primary add-comment">Comment</button>
+                </div>
+            </form>
+            <br></br>
+        {{/each}}    
     </script>
 
     <script type="text/javascript" src="jquery\dist\jquery.min.js"></script>
     <script type="text/javascript" src="handlebars\dist\handlebars.min.js"></script>
-    <script type="module" src="main.js"></script>
-    <script src="script.js"></script>
+    <!-- <script src="main.js"></script>
+    <script src="secondary.js"></script> -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>
